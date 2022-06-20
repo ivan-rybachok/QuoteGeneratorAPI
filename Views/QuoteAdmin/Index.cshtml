@@ -1,0 +1,56 @@
+﻿@model MyModel;
+
+<div>
+    <h1>Quote Generator Admin V1.0</h1>
+    <h5>Add quote to guote generator</h5>
+    <form enctype="multipart/form-data" method="post">
+        <div class="form-group">
+        <label for="txtAuthor">Author:</label>
+            @* created fields and validation  uses model to get the data out to the model*@
+            <input id="txtAuthor" type="text" asp-for="@Model.author" class="form-control" style="max-width:250px" maxlength="100" />
+            <span asp-validation-for="@Model.author" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="txtQuote">Quote:</label>
+            <textarea id="txtQuote" asp-for="@Model.quote" class="form-control" style="max-width:250px" rows="5" columns="50" maxlength="500"></textarea>
+            <span asp-validation-for="@Model.quote" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <label for="txtLink">Link:</label>
+            <input id="txtLink" type="text" asp-for="@Model.permalink" class="form-control" style="max-width:250px" maxlength="100"/>
+            <span asp-validation-for="@Model.permalink" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="btn btn-warning">
+                @* uses javascript to show the name of the image *@
+                Browse for Quote Image<input id="btnUpload" name="selectedFile" type="file" onchange="showname()" hidden>
+            </label>
+            <span id="upload"></span>
+            <span asp-validation-for="@Model.image" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" asp-controller="QuoteAdmin" asp-action="AddQuote" class="btn btn-warning">Add Quote</button>
+            @* feedback to the user *@
+            <span id="feedback" class="text-danger">@ViewData["feedback"]</span>
+            <span id="feedbacksuccess" class="text-success">@TempData["feedbacksuccess"] </span>
+        </div>
+    </form>
+    <form method="post">
+        <br>
+        <h5>Delete quote from Quote Generator</h5>
+        <label>Select quote:</label>
+        <div class="form-group">
+            @* lets use select the quote then it being moved  to model where it is being removed from the database and the dropdwonlist  *@
+            <select id="lstAuthor" class="btn btn-dark form-control text-left" 
+                    style = "width:450px;max-width:450px;"
+                    asp-for="quoteID"
+                    asp-items="@Model.quotes">
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" asp-controller="QuoteAdmin" asp-action="Delete" class="btn btn-warning">Delete Quote</button>
+                @* feedback to the user *@
+            <span id="deletefeedback" class="text-success">@ViewData["deletefeedback"]</span>
+        </div>
+    </form>
+</div>
